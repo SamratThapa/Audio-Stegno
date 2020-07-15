@@ -1,5 +1,6 @@
 package prototype;
 
+import javax.sound.sampled.*;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -9,10 +10,10 @@ import java.io.InputStream;
 import java.io.PushbackInputStream;
 import java.util.Arrays;
 
-import javax.crypto.Cipher;
+import javax.crypto.*;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.*;
 import javax.crypto.spec.PBEParameterSpec;
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
@@ -22,6 +23,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class Steganography {
 
+	public boolean feasible = true;
 	private AudioInputStream audioInputStream;
     private AudioFormat soundFormat;
     private byte[] audioBytes;
@@ -31,20 +33,27 @@ public class Steganography {
     private String outFile;
     char[] password;
     PBEKeySpec pbeKeySpec;
-    public Steganography(String inputAudioFileString, String inputTextFileString, String outputAudioFileString) {
-		// TODO Auto-generated constructor stub
-	}
+//    public Steganography(String inputAudioFileString, String inputTextFileString, String outputAudioFileString) {
+//		// TODO Auto-generated constructor stub
+//	}
 
-    public Steganography (String soundFile, String outputFile,char pwd[]){
-      	char[] password = pwd;
+    //constructor 1
+    public Steganography (String soundFile,String ptFile, String outputFile,char pwd[]){
+      	password = pwd;
       	outFile=outputFile;
         readSound(soundFile);
+        feasible = possible(ptFile);
     }
     
-	public Steganography(String inputAudioFileString, String inputTextFileString, String outputAudioFileString,
-			char[] charArray) {
+    //constructor 2
+	public Steganography(String soundFile, String ptFile,
+			char pwd[]) {
 		// TODO Auto-generated constructor stub
+		password = pwd;
+		outFile = ptFile;
+		readSound(soundFile);
 		
+		System.out.println("Pwd " + pwd);
 	}
 
 
@@ -113,7 +122,7 @@ public class Steganography {
     	
     	int totalFramesRead = 0;
     	
-    	System.out.println("Reading file");
+    	System.out.println("Reading (AU) Audio file");
     	
     	try {
 			audioInputStream = AudioSystem.getAudioInputStream(sndfile);

@@ -258,42 +258,42 @@ public class Embed extends JFrame {
         this.inputTextAreaString = this.txtArea.getText();
         
 
-        Boolean txtS = Boolean.valueOf(this.rdbtnWriteText.isSelected());
-        if (txtS.booleanValue()) {
-           
-			Boolean encryptOrNot =null;
-			if (this.inputTextAreaString.equals("")) {
-                encryptOrNot  = Boolean.valueOf(false);
-            } else {
-                encryptOrNot = Boolean.valueOf(true);
-                try {
-                    this.tempFile = File.createTempFile("AudioSteganographypyTemp" + this.pEmbedJIFNo, ".txt");
-                } catch (IOException ex) {
-                    Logger.getLogger(Embed.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                BufferedWriter output = null;
-                try {//-------------------------------------------------
-                    output = new BufferedWriter(new FileWriter(this.tempFile));
-                    output.write(this.inputTextAreaString);
-                    output.close();
-                    //---------------------------------------------------------------
-                } catch (IOException ex) {
-                    Logger.getLogger(Embed.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }//-------------------------------------------------------------------------
-          if (inputTextFileString != null) {
-            encryptOrNot = Boolean.valueOf(true);
-        } else {
-            encryptOrNot = Boolean.valueOf(false);
-        }
+//        Boolean txtS = Boolean.valueOf(this.rdbtnWriteText.isSelected());
+//        if (txtS.booleanValue()) {
+//           
+//			Boolean encryptOrNot =null;
+//			if (this.inputTextAreaString.equals("")) {
+//                encryptOrNot  = Boolean.valueOf(false);
+//            } else {
+//                encryptOrNot = Boolean.valueOf(true);
+               try {
+                   this.tempFile = File.createTempFile("AudioSteganographypyTemp" + this.pEmbedJIFNo, ".txt");
+                } catch (IOException ex) {}//{
+//                    Logger.getLogger(Embed.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//                BufferedWriter output = null;
+//                try {//-------------------------------------------------
+//                    output = new BufferedWriter(new FileWriter(this.tempFile));
+//                    output.write(this.inputTextAreaString);
+//                    output.close();
+//                    //---------------------------------------------------------------
+//                } catch (IOException ex) {
+//                    Logger.getLogger(Embed.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//            }//-------------------------------------------------------------------------
+//          if (inputTextFileString != null) {
+//            encryptOrNot = Boolean.valueOf(true);
+//        } else {
+//            encryptOrNot = Boolean.valueOf(false);
+//        }
         System.out.println("Audio : " + this.inputAudioFileString + "\nAudioDIR : " + this.inputAudioFileDirectory + "\nFileName : " + this.inputAudioFileName + "\nTextFile : " + inputTextFileString + "\nPassword : " + this.inputPasswordString + "\n" + "Output AudioFile : " + this.outputAudioFileString);
         if ((this.inputAudioFileString != null) && (!this.inputPasswordString.equals(""))) {
             this.btnOutput.setEnabled(false);
             this.outputAudioFileString = this.inputAudioFileDirectory.concat("/Encrypted-" + this.inputAudioFileName);
-            if (txtS.booleanValue()) {
+//            if (txtS.booleanValue()) {
                 inputTextFileString = this.tempFile.getAbsolutePath();
-                System.out.println("\nTemp Automatic : " + inputTextFileString);
-            }
+               System.out.println("\nTemp Automatic : " + inputTextFileString);
+//            }
             this.labelout.setText(this.outputAudioFileString);
 
             Steganography e = new Steganography(this.inputAudioFileString, inputTextFileString, this.outputAudioFileString, this.inputPasswordString.toCharArray());
@@ -329,7 +329,7 @@ public class Embed extends JFrame {
 //        }
 		//------------------------------------------------------------------------
 	}
-	}   //if undo above comment remove this clsbracket
+	   //if undo above comment remove this clsbracket
 	private JButton getBtnFinish() {
 		if (btnFinish == null) {
 			btnFinish = new JButton("Finish");
