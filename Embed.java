@@ -235,33 +235,35 @@ public class Embed extends JFrame {
 		return label;
 	}
 	private JButton getBtnOutput() {
-		if (btnOutput == null) {
-			btnOutput = new JButton("Output");
-			btnOutput.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent evt) {
-					Embed.this.btnOutputActionPerformed(evt);
-					//btnOutputActionPerformed(evt);
+		if (this.btnOutput == null) {
+			this.btnOutput = new JButton("Output");
+			this.btnOutput.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent et) {
+					Embed.this.btnOutputActionPerformed(et);
+//					btnOutputActionPerformed(et);
 				}
 			});
-			btnOutput.setBounds(42, 292, 118, 23);
+			this.btnOutput.setBounds(42, 292, 118, 23);
 		}
-		return btnOutput;
+		return this.btnOutput;
 	}//-------------------------------------------------------------------------------------------
-	public  void btnOutputActionPerformed(ActionEvent evt) {
+	@SuppressWarnings("deprecation") //for getText in password
+	public  void btnOutputActionPerformed(ActionEvent et) {
 		// TODO Auto-generated method stub
 		//------------------------------------------------------------------------------
-//		
-        //}
-		//-------------------------------------------------------------------------------------------------------
+	
+        
 		
-		this.inputPasswordString = this.passwordField.getText();
+		this.inputPasswordString = this.passwordField.getText(); //suppresswarnings
         this.inputTextAreaString = this.txtArea.getText();
-        Boolean encryptOrNot = null;
+        
 
         Boolean txtS = Boolean.valueOf(this.rdbtnWriteText.isSelected());
         if (txtS.booleanValue()) {
-            if (this.inputTextAreaString.equals("")) {
-                encryptOrNot = Boolean.valueOf(false);
+           
+			Boolean encryptOrNot =null;
+			if (this.inputTextAreaString.equals("")) {
+                encryptOrNot  = Boolean.valueOf(false);
             } else {
                 encryptOrNot = Boolean.valueOf(true);
                 try {
@@ -306,33 +308,39 @@ public class Embed extends JFrame {
         }
 		
 		//--------------------------------------------------------------------------------------------------
-		try {
-			this.tempFile = File.createTempFile("AudioSteganographypyTemp" + this.pEmbedJIFNo, ".txt");
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-             inputTextFileString = this.tempFile.getAbsolutePath();
-             System.out.println("\nTemp Automatic : " + inputTextFileString);
-         
-         labelout.setText(this.outputAudioFileString);
-
-         Steganography e = new Steganography(this.inputAudioFileString, inputTextFileString, this.outputAudioFileString);
-         e.encode();
-         //btnFinish.setEnabled(true);
-         try {
-             tempFile.deleteOnExit();
-         } catch (Exception ex) {
-         }
-        }
+//		try {
+//			this.tempFile = File.createTempFile("AudioSteganographypyTemp" + this.pEmbedJIFNo, ".txt");
+//		} catch (IOException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
+//             inputTextFileString = this.tempFile.getAbsolutePath();
+//             System.out.println("\nTemp Automatic : " + inputTextFileString);
+//         
+//         labelout.setText(this.outputAudioFileString);
+//
+//         Steganography e = new Steganography(this.inputAudioFileString, inputTextFileString, this.outputAudioFileString);
+//         e.encode();
+//         //btnFinish.setEnabled(true);
+//         try {
+//             tempFile.deleteOnExit();
+//         } catch (Exception ex) {
+//         }
+//        }
 		//------------------------------------------------------------------------
 	}
-
+	}   //if undo above comment remove this clsbracket
 	private JButton getBtnFinish() {
 		if (btnFinish == null) {
 			btnFinish = new JButton("Finish");
 			btnFinish.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent evt) {
+					try {
+//			            this.tempFile.deleteOnExit();
+						tempFile.deleteOnExit();
+			        } catch (Exception ex) {
+			        }
+			        dispose();
 				}
 			});
 			btnFinish.setBounds(42, 340, 118, 23);
