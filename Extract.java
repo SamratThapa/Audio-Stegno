@@ -27,6 +27,10 @@ public class Extract extends JFrame {
 	private JPasswordField passwordField;
 	private JLabel lblPasswordToDecrypt;
 	private JLabel lblOutputLocation;
+	private JTextArea showText;
+	private JButton btnGoBack;
+	private JLabel lblUnhideYourText;
+	private JButton btnNewButton;
 
 	/**
 	 * Launch the application.
@@ -48,8 +52,9 @@ public class Extract extends JFrame {
 	 * Create the frame.
 	 */
 	public Extract() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setTitle("Unhide Text from Audio File");
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setBounds(100, 100, 748, 483);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -61,6 +66,10 @@ public class Extract extends JFrame {
 		contentPane.add(getPasswordField());
 		contentPane.add(getLblPasswordToDecrypt());
 		contentPane.add(getLblOutputLocation());
+		contentPane.add(getShowText());
+		contentPane.add(getBtnGoBack());
+		contentPane.add(getLblUnhideYourText());
+		contentPane.add(getBtnNewButton());
 	}
 
 	private JButton getBtnEncryptedFile() {
@@ -72,7 +81,7 @@ public class Extract extends JFrame {
 					
 				}
 			});
-			btnEncryptedFile.setBounds(10, 31, 142, 23);
+			btnEncryptedFile.setBounds(24, 68, 142, 23);
 		}
 		return btnEncryptedFile;
 	}
@@ -102,7 +111,7 @@ public class Extract extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 				}
 			});
-			btnExtractText.setBounds(10, 140, 142, 23);
+			btnExtractText.setBounds(24, 218, 142, 23);
 		}
 		return btnExtractText;
 	}
@@ -111,38 +120,79 @@ public class Extract extends JFrame {
 			btnFinish = new JButton("Finish");
 			btnFinish.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					dispose();
 				}
 			});
-			btnFinish.setBounds(10, 207, 142, 23);
+			btnFinish.setBounds(24, 396, 142, 23);
 		}
 		return btnFinish;
 	}
 	private JLabel getLblFileNotChosen() {
 		if (lblFileNotChosen == null) {
 			lblFileNotChosen = new JLabel("File not Chosen");
-			lblFileNotChosen.setBounds(185, 35, 239, 14);
+			lblFileNotChosen.setBounds(240, 72, 497, 14);
 		}
 		return lblFileNotChosen;
 	}
 	private JPasswordField getPasswordField() {
 		if (passwordField == null) {
 			passwordField = new JPasswordField();
-			passwordField.setBounds(10, 89, 142, 23);
+			passwordField.setBounds(24, 171, 142, 23);
 		}
 		return passwordField;
 	}
 	private JLabel getLblPasswordToDecrypt() {
 		if (lblPasswordToDecrypt == null) {
 			lblPasswordToDecrypt = new JLabel("Password to Decrypt");
-			lblPasswordToDecrypt.setBounds(185, 93, 123, 14);
+			lblPasswordToDecrypt.setBounds(240, 175, 123, 14);
 		}
 		return lblPasswordToDecrypt;
 	}
 	private JLabel getLblOutputLocation() {
 		if (lblOutputLocation == null) {
 			lblOutputLocation = new JLabel("Output Location");
-			lblOutputLocation.setBounds(185, 144, 220, 14);
+			lblOutputLocation.setBounds(240, 222, 497, 14);
 		}
 		return lblOutputLocation;
+	}
+	private JTextArea getShowText() {
+		if (showText == null) {
+			showText = new JTextArea();
+			showText.setText("encrypted text");
+			showText.setBounds(26, 252, 430, 115);
+		}
+		return showText;
+	}
+	private JButton getBtnGoBack() {
+		if (btnGoBack == null) {
+			btnGoBack = new JButton("Go Back");
+			btnGoBack.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					dispose();
+				}
+			});
+			btnGoBack.setBounds(240, 396, 120, 23);
+		}
+		return btnGoBack;
+	}
+	private JLabel getLblUnhideYourText() {
+		if (lblUnhideYourText == null) {
+			lblUnhideYourText = new JLabel("Unhide your Text from Audio File");
+			lblUnhideYourText.setForeground(new Color(0, 51, 153));
+			lblUnhideYourText.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 16));
+			lblUnhideYourText.setBounds(24, 23, 365, 23);
+		}
+		return lblUnhideYourText;
+	}
+	private JButton getBtnNewButton() {
+		if (btnNewButton == null) {
+			btnNewButton = new JButton("Play Audio\r\n");
+			btnNewButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+				}
+			});
+			btnNewButton.setBounds(24, 115, 142, 23);
+		}
+		return btnNewButton;
 	}
 }

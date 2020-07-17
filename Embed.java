@@ -25,6 +25,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import javax.swing.ButtonGroup;
+import java.awt.Font;
+import java.awt.Color;
 
 public class Embed extends JFrame {
 
@@ -37,8 +39,7 @@ public class Embed extends JFrame {
 	    public File tempFile;
 	    public String outputAudioFileString;
 	   // private Audio audio;
-	    public static int embedJIFNo = 1;
-	    private int pEmbedJIFNo;
+
 	    public String inputTextFileString;
 	
 	private JPanel contentPane;
@@ -55,6 +56,8 @@ public class Embed extends JFrame {
 	private JRadioButton rdbtnWriteText;
 	private JTextArea txtArea;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
+	private JButton btnGoBack;
+	private JLabel lblNewLabel;
 
 	/**
 	 * Launch the application.
@@ -76,8 +79,9 @@ public class Embed extends JFrame {
 	 * Create the frame.
 	 */
 	public Embed() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 540, 413);
+		setTitle("Hide text in Audio File");
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setBounds(100, 100, 743, 532);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -94,27 +98,22 @@ public class Embed extends JFrame {
 		contentPane.add(getRdbtnTextFile());
 		contentPane.add(getRdbtnWriteText());
 		contentPane.add(getTxtArea());
+		contentPane.add(getBtnGoBack());
+		contentPane.add(getLblNewLabel());
 		
-		//------
-		setLocation(Front.embedJIFX, Front.embedJIFY);
-        Front.embedJIFX += 20;
-        Front.embedJIFY += 25;
-        this.pEmbedJIFNo = embedJIFNo;
-        embedJIFNo += 1;
-		//-------
+		
 	}
 
 	private JButton getBtnInput() {
 		if (btnInput == null) {
-			btnInput = new JButton("Input Audio");
+			btnInput = new JButton("Input Audio File");
 			btnInput.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent evt) {
 					Embed.this.btnInputActionPerformed(evt);
-//					back= new BackEndHandler(this, BackEndHandler.EMBED_MESSAGE);
-//					back.start();
+
 				}
 			});
-			btnInput.setBounds(42, 24, 118, 23);
+			btnInput.setBounds(42, 67, 143, 23);
 		}
 		return btnInput;
 	}
@@ -163,20 +162,20 @@ public class Embed extends JFrame {
         } else {
             System.out.println("File access cancelled by user.");
         }
-        //this.playButton.setEnabled(true);
+        
     }
 	
 	//------------------------------------------------------------------------------------------------
 
 	private JButton getBtnText() {
 		if (btnText == null) {
-			btnText = new JButton("Text File");
+			btnText = new JButton("Input Text File");
 			btnText.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent evt) {
 					Embed.this.btnTextActionPerformed(evt);
 				}
 			});
-			btnText.setBounds(42, 100, 118, 23);
+			btnText.setBounds(42, 190, 143, 23);
 		}
 		return btnText;
 	}
@@ -230,7 +229,7 @@ public class Embed extends JFrame {
 	private JLabel getLabel() {
 		if (label == null) {
 			label = new JLabel("File not chosen");
-			label.setBounds(196, 104, 228, 14);
+			label.setBounds(240, 194, 420, 14);
 		}
 		return label;
 	}
@@ -243,7 +242,7 @@ public class Embed extends JFrame {
 //					btnOutputActionPerformed(et);
 				}
 			});
-			this.btnOutput.setBounds(42, 292, 118, 23);
+			this.btnOutput.setBounds(42, 410, 143, 23);
 		}
 		return this.btnOutput;
 	}//-------------------------------------------------------------------------------------------
@@ -269,9 +268,9 @@ public class Embed extends JFrame {
             } else {
                 encryptOrNot = Boolean.valueOf(true);
                 try {
-                    this.tempFile = File.createTempFile("AudioSteganographypyTemp" + this.pEmbedJIFNo, ".txt");
+                    this.tempFile = File.createTempFile("AudioSteganographypyTemp" /*+ this.pEmbedJIFNo*/, ".txt");
                 } catch (IOException ex) {
-                    //Logger.getLogger(Embed.class.getName()).log(Level.SEVERE, null, ex);
+                    
                 }
                 BufferedWriter output = null;
                 try {//-------------------------------------------------
@@ -280,7 +279,7 @@ public class Embed extends JFrame {
                     output.close();
                     //---------------------------------------------------------------
                 } catch (IOException ex) {
-                    //Logger.getLogger(Embed.class.getName()).log(Level.SEVERE, null, ex);
+                    
                 }
             }//-------------------------------------------------------------------------
         } else if (inputTextFileString != null) {
@@ -306,7 +305,8 @@ public class Embed extends JFrame {
             } catch (Exception ex) {
             }
         } else {
-            JOptionPane.showMessageDialog(this, "1. Select Audio File\n2. Write Text or Select Text File\n3. Enter Password.", "Opps ! Something is missing !", 0);
+        	//if neither the text file or text in textarea or audio file the instructions in message dialog
+            JOptionPane.showMessageDialog(this, "1. Select Audio File\n2. Write Text or Select Text File\n3. Enter Password.", "Something is missing !", 0);
         }
     }
         
@@ -346,21 +346,21 @@ public class Embed extends JFrame {
 			        dispose();
 				}
 			});
-			btnFinish.setBounds(42, 340, 118, 23);
+			btnFinish.setBounds(42, 459, 143, 23);
 		}
 		return btnFinish;
 	}
 	private JLabel getLabel1() {
 		if (label1 == null) {
 			label1 = new JLabel("File not chosen");
-			label1.setBounds(196, 28, 228, 14);
+			label1.setBounds(240, 71, 420, 14);
 		}
 		return label1;
 	}
 	private JLabel getLabelout() {
 		if (labelout == null) {
 			labelout = new JLabel("Output Location");
-			labelout.setBounds(208, 296, 216, 14);
+			labelout.setBounds(240, 414, 420, 14);
 		}
 		return labelout;
 	}
@@ -371,20 +371,20 @@ public class Embed extends JFrame {
 				public void actionPerformed(ActionEvent arg0) {
 				}
 			});
-			passwordField.setBounds(42, 245, 118, 23);
+			passwordField.setBounds(42, 357, 143, 23);
 		}
 		return passwordField;
 	}
 	private JLabel getLblPasswordToEncrypt() {
 		if (lblPasswordToEncrypt == null) {
 			lblPasswordToEncrypt = new JLabel("Password to Encrypt");
-			lblPasswordToEncrypt.setBounds(197, 249, 143, 14);
+			lblPasswordToEncrypt.setBounds(240, 361, 143, 14);
 		}
 		return lblPasswordToEncrypt;
 	}
 	private JRadioButton getRdbtnTextFile() {
 		if (rdbtnTextFile == null) {
-			rdbtnTextFile = new JRadioButton("Text File");
+			rdbtnTextFile = new JRadioButton("Text File to Hide");
 			buttonGroup.add(rdbtnTextFile);
 			rdbtnTextFile.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -393,13 +393,13 @@ public class Embed extends JFrame {
 				        btnText.setEnabled(true);
 				}
 			});
-			rdbtnTextFile.setBounds(38, 70, 109, 23);
+			rdbtnTextFile.setBounds(42, 141, 147, 23);
 		}
 		return rdbtnTextFile;
 	}
 	private JRadioButton getRdbtnWriteText() {
 		if (rdbtnWriteText == null) {
-			rdbtnWriteText = new JRadioButton("Write Text");
+			rdbtnWriteText = new JRadioButton("Write Text to Hide");
 			buttonGroup.add(rdbtnWriteText);
 			rdbtnWriteText.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
@@ -407,7 +407,7 @@ public class Embed extends JFrame {
 				}
 			});
 			rdbtnWriteText.setSelected(true); 
-			rdbtnWriteText.setBounds(42, 142, 109, 23);
+			rdbtnWriteText.setBounds(42, 245, 143, 23);
 		}
 		return rdbtnWriteText;
 	}
@@ -416,8 +416,31 @@ public class Embed extends JFrame {
 			txtArea = new JTextArea();
 			txtArea.setText("write text here");
 			
-			txtArea.setBounds(178, 141, 279, 85);
+			txtArea.setBounds(240, 244, 420, 85);
 		}
 		return txtArea;
+	}
+	private JButton getBtnGoBack() {
+		if (btnGoBack == null) {
+			btnGoBack = new JButton("Go Back");
+			btnGoBack.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					dispose();
+					
+					
+				}
+			});
+			btnGoBack.setBounds(241, 459, 124, 23);
+		}
+		return btnGoBack;
+	}
+	private JLabel getLblNewLabel() {
+		if (lblNewLabel == null) {
+			lblNewLabel = new JLabel("Hide your Text in Audio File");
+			lblNewLabel.setForeground(new Color(0, 51, 153));
+			lblNewLabel.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 15));
+			lblNewLabel.setBounds(42, 21, 356, 23);
+		}
+		return lblNewLabel;
 	}
 }

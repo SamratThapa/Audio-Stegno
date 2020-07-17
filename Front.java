@@ -13,20 +13,25 @@ import javax.swing.filechooser.*;
 
 
 import javax.swing.JLabel;
+import java.awt.Font;
+import javax.swing.SwingConstants;
+import java.awt.Color;
 
 public class Front {
 	//------------
-	public static int embedJIFX = 0;
-    public static int embedJIFY = 0;
-    public static int extractJIFX = 600;
-    public static int extractJIFY = 0;
+//	public static int embedJIFX = 0;
+//    public static int embedJIFY = 0;
+//    public static int extractJIFX = 600;
+//    public static int extractJIFY = 0;
 	//----
 
-	private JFrame frame;
+	private JFrame frmAudioSteganographyGroup;
 	private JButton btnExtract;
 	private JButton btnEmbed;
 	private JLabel l;
 	private JLabel lblUnhideTextFrom;
+	private JLabel lblAudioSteganography;
+	private JButton btnHelp;
 
 	/**
 	 * Launch the application.
@@ -36,7 +41,7 @@ public class Front {
 			public void run() {
 				try {
 					Front window = new Front();
-					window.frame.setVisible(true);
+					window.frmAudioSteganographyGroup.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -55,14 +60,17 @@ public class Front {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
-		frame.getContentPane().add(getBtnExtract());
-		frame.getContentPane().add(getBtnEmbed());
-		frame.getContentPane().add(getL());
-		frame.getContentPane().add(getLblUnhideTextFrom());
+		frmAudioSteganographyGroup = new JFrame();
+		frmAudioSteganographyGroup.setTitle("Audio Steganography Group I");
+		frmAudioSteganographyGroup.setBounds(100, 100, 450, 339);
+		frmAudioSteganographyGroup.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmAudioSteganographyGroup.getContentPane().setLayout(null);
+		frmAudioSteganographyGroup.getContentPane().add(getBtnExtract());
+		frmAudioSteganographyGroup.getContentPane().add(getBtnEmbed());
+		frmAudioSteganographyGroup.getContentPane().add(getL());
+		frmAudioSteganographyGroup.getContentPane().add(getLblUnhideTextFrom());
+		frmAudioSteganographyGroup.getContentPane().add(getLblAudioSteganography());
+		frmAudioSteganographyGroup.getContentPane().add(getBtnHelp());
 	}
 	private JButton getBtnExtract() {
 		if (btnExtract == null) {
@@ -73,7 +81,7 @@ public class Front {
 					frame.setVisible(true);
 				}
 			});
-			btnExtract.setBounds(228, 86, 89, 23);
+			btnExtract.setBounds(228, 167, 106, 23);
 		}
 		return btnExtract;
 	}
@@ -88,40 +96,50 @@ public class Front {
 					frame.setVisible(true);
 					
 					
-//					 JFileChooser j = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory()); 
-//					  
-//			            // invoke the showsOpenDialog function to show the save dialog 
-//			            int r = j.showOpenDialog(null); 
-//			         // if the user selects a file 
-//			            if (r == JFileChooser.APPROVE_OPTION) 
-//			  
-//			            { 
-//			                // set the label to the path of the selected file 
-//			                l.setText(j.getSelectedFile().getAbsolutePath()); 
-//			            } 
-//			            // if the user cancelled the operation 
-//			            else
-//			                l.setText("the user cancelled the operation"); 
+
       } 
 			  
 				
 			});
-			btnEmbed.setBounds(228, 22, 89, 23);
+			btnEmbed.setBounds(228, 93, 106, 23);
 		}
 		return btnEmbed;
 	}
 	private JLabel getL() {
 		if (l == null) {
 			l = new JLabel("Hide Text In Audio");
-			l.setBounds(37, 26, 181, 14);
+			l.setBounds(50, 97, 181, 14);
 		}
 		return l;
 	}
 	private JLabel getLblUnhideTextFrom() {
 		if (lblUnhideTextFrom == null) {
 			lblUnhideTextFrom = new JLabel("Unhide Text From Audio");
-			lblUnhideTextFrom.setBounds(37, 90, 168, 14);
+			lblUnhideTextFrom.setBounds(50, 171, 168, 14);
 		}
 		return lblUnhideTextFrom;
+	}
+	private JLabel getLblAudioSteganography() {
+		if (lblAudioSteganography == null) {
+			lblAudioSteganography = new JLabel("Audio Steganography");
+			lblAudioSteganography.setForeground(new Color(0, 51, 153));
+			lblAudioSteganography.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 17));
+			lblAudioSteganography.setBounds(50, 24, 331, 42);
+		}
+		return lblAudioSteganography;
+	}
+	private JButton getBtnHelp() {
+		if (btnHelp == null) {
+			btnHelp = new JButton("Help");
+			btnHelp.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					Help frame = new Help();
+					frame.setVisible(true);
+					
+				}
+			});
+			btnHelp.setBounds(228, 238, 106, 23);
+		}
+		return btnHelp;
 	}
 }

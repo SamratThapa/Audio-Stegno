@@ -25,11 +25,10 @@ public class Steganography {
 
 	public boolean feasible = true;
 	private AudioInputStream audioInputStream;
-    private AudioFormat soundFormat;
     private byte[] audioBytes;
     private byte[] buff;
     private byte[] cipherbuff;
-    private byte[] clearbuff;
+    
     private String outFile;
     char[] password;
     PBEKeySpec pbeKeySpec;
@@ -44,20 +43,7 @@ public class Steganography {
         readSound(soundFile);
         feasible = possible(ptFile);
     }
-    
-    //constructor 2
-	public Steganography(String soundFile, String ptFile,
-			char pwd[]) {
-		// TODO Auto-generated constructor stub
-		password = pwd;
-		outFile = ptFile;
-		readSound(soundFile);
-		
-		System.out.println("Pwd " + pwd);
-	}
-
-
-	//--------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------------------------
     public void encode(){
     	
     	int k = 0;
@@ -65,7 +51,7 @@ public class Steganography {
         int pt;
         byte pb;
 
-        System.out.println("Hiding the ciphertext in AU file ...");
+        System.out.println("Hiding the ciphertext in Audio file ...");
         // First encode the length of the plaintext
         pt = cipherbuff.length;
         for (int j = 1; j <= 32; j++) {
@@ -80,8 +66,8 @@ public class Steganography {
             i++;
         }
 
-    // Now start encoding the message itself!
-        //ptext.getChars(0, ptext.length(), cleartext, 0);
+    // Now encoding the message itself!
+        
         while (k < cipherbuff.length) {
             pb = cipherbuff[k];
             //System.out.print((char)pt);
@@ -139,19 +125,19 @@ public class Steganography {
                     // Calculate the number of frames actually read.
                     numFramesRead = numBytesRead / bytesPerFrame;
                     totalFramesRead += numFramesRead;
-            // Here, work with the audio data that's 
-                    // now in the audioBytes array...	    
+            // Now work with the audio data that's 
+           // now in the audioBytes array    
                 }
             } catch (Exception ex) {
-                // Handle the error...
+                // Handle the error
                 System.out.println("Audio file error:" + ex);
             }
         } catch (Exception e) {
-            // Handle the error...
+            // Handle the erro
             System.out.println("Audio file error:" + e);
         }
     }
- // is it possible to do steganography with current file
+ // To check if it is possible to do steganography with current file
     private boolean possible(String pt) {
         // accessing the input file
         try {
@@ -184,64 +170,7 @@ public class Steganography {
         return true;
     }// possible()
     //---------------------------------------------------------
-    // Generated Password relavant to underlying algorithm from characters
-    //---------------------------------------------------------
-    private char[] generatePasswd(char[] inputval) throws IOException {
-        char[] lineBuffer;
-        char[] buf;
-        int i;
-        buf = lineBuffer = new char[128];
-        int room = buf.length;
-        int offset = 0;
-        int c;
-
-        int index = 0;
-        int lenofinputval = inputval.length;
-        System.out.println("Debug:inputval: " + inputval);
-        System.out.println("Debug:lenofinputval: " + lenofinputval);
-
-        loop:
-        //while (true) {
-        while (index < lenofinputval) {
-            //switch (c = in.read()) {
-            switch (c = inputval[index]) {
-                case -1:
-                case '\n':
-                    System.out.println("Debug::Iam in NewLine or -1");
-                    break loop;
-                case '\r':
-                    System.out.println("Debug::Iam in Carriage Return");
-                    index++;
-                    int c2 = inputval[index];
-                    if ((c2 != '\n') && (c2 != -1)) {
-                       
-                        index--;
-                        System.out.println("Debug::Iam in Carriage Return IF Block");
-                    } else {
-                        break loop;
-                    }
-                default:
-                    if (--room < 0) {
-                        buf = new char[offset + 128];
-                        room = buf.length - offset - 1;
-                        System.arraycopy(lineBuffer, 0, buf, 0, offset);
-                        Arrays.fill(lineBuffer, ' ');
-                        lineBuffer = buf;
-                    }
-                    buf[offset++] = (char) c;
-                    break;
-            }//switch
-            index++;
-        }//While
-        if (offset == 0) {
-            return null;
-        }
-        char[] ret = new char[offset];
-        System.arraycopy(buf, 0, ret, 0, offset);
-        Arrays.fill(buf, ' ');
-        System.out.println("$$$$$$$$$$::::...... Password Generated: " + ret);
-        return ret;
-    }
+    
   //---------------------------------------------------------
     // Reads user password from given input stream.
     //---------------------------------------------------------
@@ -315,7 +244,8 @@ public class Steganography {
         int count = 20;
 
         // Create PBE parameter set
-        pbeParamSpec = new PBEParameterSpec(salt, count);
+        pbeParamSpec = new PBEParameterSpec(salt, count);//Constructs a parameter set for password-based encryption as defined in the PKCS #5 standard.
+
 
      // Prompt user for encryption password.
         // Collect user password as char array (using the
@@ -326,7 +256,7 @@ public class Steganography {
 
             System.out.println("Password Verification: " + password);
 
-            pbeKeySpec = new PBEKeySpec(password);
+            pbeKeySpec = new PBEKeySpec(password);//Constructor that takes a password.
             System.out.println("Encrypting the plaintext message ...");
 
             keyFac = SecretKeyFactory.getInstance("PBEWithMD5AndDES");
@@ -338,8 +268,8 @@ public class Steganography {
             // Initialize PBE Cipher with key and parameters
             pbeCipher.init(Cipher.ENCRYPT_MODE, pbeKey, pbeParamSpec);
 
-     // Our cleartext
-            //byte[] cleartext = "This is another example".getBytes();
+     // Our input cleartext
+            
             // Encrypt the cleartext
             cipherbuff = pbeCipher.doFinal(buff);
         } catch (Exception ex) {
