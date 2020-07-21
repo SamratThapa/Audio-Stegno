@@ -3,13 +3,11 @@ package prototype;
 import java.awt.*;
 import javax.swing.*;
 import java.io.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JButton;
-import javax.swing.JLabel;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -18,6 +16,8 @@ public class Extract extends JFrame {
 	 public String encryptedAudioFileName;
 	    public String encryptedAudioFileDirectory;
 	    public String encryptedAudioFileString;
+	    public String inputPasswordDString;
+	    public String outputTextFileString;
 	    
 	private JPanel contentPane;
 	private JButton btnEncryptedFile;
@@ -31,6 +31,7 @@ public class Extract extends JFrame {
 	private JButton btnGoBack;
 	private JLabel lblUnhideYourText;
 	private JButton btnNewButton;
+	private JButton btnStopAudio;
 
 	/**
 	 * Launch the application.
@@ -70,6 +71,7 @@ public class Extract extends JFrame {
 		contentPane.add(getBtnGoBack());
 		contentPane.add(getLblUnhideYourText());
 		contentPane.add(getBtnNewButton());
+		contentPane.add(getBtnStopAudio());
 	}
 
 	private JButton getBtnEncryptedFile() {
@@ -86,13 +88,12 @@ public class Extract extends JFrame {
 		return btnEncryptedFile;
 	}
 	
-	public void btnEncryptedFileActionPerformed(ActionEvent e) {
+	private void btnEncryptedFileActionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		JFileChooser encryptedAudioChooser= new JFileChooser();
 		int returnVal = encryptedAudioChooser.showOpenDialog(this);
         if (returnVal == 0) {
             File file = encryptedAudioChooser.getSelectedFile();
-            
             this.encryptedAudioFileName = file.getName();
             this.encryptedAudioFileDirectory = file.getParent();
 
@@ -101,7 +102,7 @@ public class Extract extends JFrame {
         } else {
             System.out.println("File access cancelled by user.");
         }
-//        this.playButton.setEnabled(true);
+//---------------------------------        
 	}
 
 	private JButton getBtnExtractText() {
@@ -109,6 +110,45 @@ public class Extract extends JFrame {
 			btnExtractText = new JButton("Extract Text");
 			btnExtractText.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					
+					inputPasswordDString = passwordField.getText();
+					if ((encryptedAudioFileString != null) && (!inputPasswordDString.equals(""))) {
+			            btnFinish.setEnabled(true);
+			            btnExtractText.setEnabled(false);
+			            outputTextFileString = encryptedAudioFileDirectory.concat("/ExtractedText-From-" + encryptedAudioFileName + ".txt");
+			            lblOutputLocation.setText(outputTextFileString);
+			            Steganogarphy d = new Steganography(encryptedAudioFileString, outputTextFileString, inputPasswordDString.toCharArray());
+			            d.decode();
+			        } else {
+			            //JOptionPane.showMessageDialog(this, "1. Select Audio File\n2. Enter Password.", "Opps ! Something is missing !", 0);
+			        }
+			        BufferedReader br = null;
+			        try {
+			            br = new BufferedReader(new FileReader(outputTextFileString));
+			        } catch (FileNotFoundException ex) {
+			            
+			        }
+			        try {
+			            StringBuilder sb = new StringBuilder();
+			            String lineRead = br.readLine();
+			            while (lineRead != null) {
+			                sb.append(lineRead);
+			                sb.append('\n');
+			                lineRead = br.readLine();
+			            }
+			            String everything = sb.toString();
+
+			            showText.setText(everything);
+			            return;
+			        } catch (IOException ex) {
+			            
+			        } finally {
+			            try {
+			                br.close();
+			            } catch (IOException ex) {
+			                
+			            }
+			        }
 				}
 			});
 			btnExtractText.setBounds(24, 218, 142, 23);
@@ -191,8 +231,19 @@ public class Extract extends JFrame {
 				public void actionPerformed(ActionEvent arg0) {
 				}
 			});
-			btnNewButton.setBounds(24, 115, 142, 23);
+			btnNewButton.setBounds(24, 115, 83, 23);
 		}
 		return btnNewButton;
+	}
+	private JButton getBtnStopAudio() {
+		if (btnStopAudio == null) {
+			btnStopAudio = new JButton("Stop Audio");
+			btnStopAudio.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+				}
+			});
+			btnStopAudio.setBounds(115, 115, 89, 23);
+		}
+		return btnStopAudio;
 	}
 }

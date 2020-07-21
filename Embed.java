@@ -58,6 +58,8 @@ public class Embed extends JFrame {
 	private final ButtonGroup buttonGroup = new ButtonGroup();
 	private JButton btnGoBack;
 	private JLabel lblNewLabel;
+	private JButton btnPlayAudio;
+	private JButton btnStopAudio;
 
 	/**
 	 * Launch the application.
@@ -100,6 +102,8 @@ public class Embed extends JFrame {
 		contentPane.add(getTxtArea());
 		contentPane.add(getBtnGoBack());
 		contentPane.add(getLblNewLabel());
+		contentPane.add(getBtnPlayAudio());
+		contentPane.add(getBtnStopAudio());
 		
 		
 	}
@@ -175,7 +179,7 @@ public class Embed extends JFrame {
 					Embed.this.btnTextActionPerformed(evt);
 				}
 			});
-			btnText.setBounds(42, 190, 143, 23);
+			btnText.setBounds(42, 201, 143, 23);
 		}
 		return btnText;
 	}
@@ -229,7 +233,7 @@ public class Embed extends JFrame {
 	private JLabel getLabel() {
 		if (label == null) {
 			label = new JLabel("File not chosen");
-			label.setBounds(240, 194, 420, 14);
+			label.setBounds(240, 205, 420, 14);
 		}
 		return label;
 	}
@@ -393,7 +397,7 @@ public class Embed extends JFrame {
 				        btnText.setEnabled(true);
 				}
 			});
-			rdbtnTextFile.setBounds(42, 141, 147, 23);
+			rdbtnTextFile.setBounds(38, 161, 147, 23);
 		}
 		return rdbtnTextFile;
 	}
@@ -442,5 +446,27 @@ public class Embed extends JFrame {
 			lblNewLabel.setBounds(42, 21, 356, 23);
 		}
 		return lblNewLabel;
+	}
+	private JButton getBtnPlayAudio() {
+		if (btnPlayAudio == null) {
+			btnPlayAudio = new JButton("Play Audio");
+			btnPlayAudio.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+				}
+			});
+			btnPlayAudio.setBounds(41, 118, 89, 23);
+		}
+		return btnPlayAudio;
+	}
+	private JButton getBtnStopAudio() {
+		if (btnStopAudio == null) {
+			btnStopAudio = new JButton("Stop Audio");
+			btnStopAudio.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+				}
+			});
+			btnStopAudio.setBounds(149, 118, 89, 23);
+		}
+		return btnStopAudio;
 	}
 }

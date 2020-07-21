@@ -5,6 +5,7 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PushbackInputStream;
@@ -54,7 +55,8 @@ public class Steganography {
         System.out.println("Hiding the ciphertext in Audio file ...");
         // First encode the length of the plaintext
         pt = cipherbuff.length;
-        for (int j = 1; j <= 32; j++) {
+        for (int j = 1; j <= 32; j++) {//4 bytes of space for length: 4bytes*8bit = 32 bits
+
             if ((pt & 0x80000000) != 0) // MSB of pt is '1'
             {
                 audioBytes[i] = (byte) (audioBytes[i] | 0x01);
@@ -101,7 +103,29 @@ public class Steganography {
         }//if
     }//encode
 //-----------------------------------------------------------------------------
-    	
+    public boolean decode() {
+        boolean success = true;
+        byte out = 0;
+        int length = 0;
+        int k = 1; //start of plaintext in audioBytes
+        System.out.println("Retrieving the ciphertext from AU file ....");
+        
+        
+        // Now decode the message!
+        
+        
+        try {
+            System.out.println("Writing the decrypted hidden message to" + outFile + " ...");
+            FileOutputStream outfile = new FileOutputStream(outFile);
+            
+            outfile.close();
+        } catch (Exception e) {
+            System.out.println("Caught Exception: " + e);
+        }
+
+        return success;
+    }//decode
+  //-------------------------------------------------------------------
     
     public void readSound(String sfile) {
     	File sndfile = new File(sfile);
