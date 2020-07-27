@@ -117,7 +117,7 @@ public class Extract extends JFrame {
 			            btnExtractText.setEnabled(false);
 			            outputTextFileString = encryptedAudioFileDirectory.concat("/ExtractedText-From-" + encryptedAudioFileName + ".txt");
 			            lblOutputLocation.setText(outputTextFileString);
-			            Steganogarphy d = new Steganography(encryptedAudioFileString, outputTextFileString, inputPasswordDString.toCharArray());
+			            Steganography d = new Steganography(encryptedAudioFileString, outputTextFileString, inputPasswordDString.toCharArray());
 			            d.decode();
 			        } else {
 			            //JOptionPane.showMessageDialog(this, "1. Select Audio File\n2. Enter Password.", "Opps ! Something is missing !", 0);

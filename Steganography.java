@@ -12,10 +12,7 @@ import java.io.PushbackInputStream;
 import java.util.Arrays;
 
 import javax.crypto.*;
-import javax.crypto.SecretKey;
-import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.*;
-import javax.crypto.spec.PBEParameterSpec;
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -28,6 +25,7 @@ public class Steganography {
 	private AudioInputStream audioInputStream;
     private byte[] audioBytes;
     private byte[] buff;
+    private byte[] clearbuff;
     private byte[] cipherbuff;
     
     private String outFile;
@@ -44,6 +42,17 @@ public class Steganography {
         readSound(soundFile);
         feasible = possible(ptFile);
     }
+  //constructor 2
+  	public Steganography(String soundFile, String ptFile,
+  			char pwd[]) {
+  		// TODO Auto-generated constructor stub
+  		password = pwd;
+  		outFile = ptFile;
+  		readSound(soundFile);
+  		//for decoding
+  		
+  	}
+
     //--------------------------------------------------------------------------------------------
     public void encode(){
     	
@@ -109,15 +118,38 @@ public class Steganography {
         int length = 0;
         int k = 1; //start of plaintext in audioBytes
         System.out.println("Retrieving the ciphertext from AU file ....");
-        
-        
+        // First decode the first 32 samples to find the length of the message text
+        length = length & 0x00000000;
+        for (int j = 1; j <= 32; j++) {
+            length = length << 1;
+            if ((audioBytes[k] & 0x01) != 0) {
+                length = length | 0x00000001;
+            }
+            k++;
+        }// for j
+        buff = new byte[length];
+    //System.out.println("Length: " + length);
+
         // Now decode the message!
-        
-        
+        out = (byte) (out & 0x00);
+        for (int i = 0; i < length; i++) {
+            for (int j = 1; j <= 8; j++) {
+                out = (byte) (out << 1);
+                if ((audioBytes[k] & 0x01) != 0) {
+                    out = (byte) (out | 0x01);
+                }
+                k++;
+            }// for j
+            buff[i] = out;
+            //System.out.print((char)out);
+            out = (byte) (out & 0x00);
+
+        }// for i
+        decrypt();
         try {
             System.out.println("Writing the decrypted hidden message to" + outFile + " ...");
             FileOutputStream outfile = new FileOutputStream(outFile);
-            
+            outfile.write(clearbuff);
             outfile.close();
         } catch (Exception e) {
             System.out.println("Caught Exception: " + e);
@@ -125,6 +157,7 @@ public class Steganography {
 
         return success;
     }//decode
+
   //-------------------------------------------------------------------
     
     public void readSound(String sfile) {
@@ -305,5 +338,63 @@ public class Steganography {
     }//encrypt()
 
    //-------------------------------------------------
+    //-------------------------------------------------
+    //Password based decryption
+    //-------------------------------------------------
+    private void decrypt() {
+        PBEKeySpec pbeKeySpec;
+        PBEParameterSpec pbeParamSpec;
+        SecretKeyFactory keyFac;
+
+        // same salt as in encryption
+        byte[] salt = {
+            (byte) 0xc7, (byte) 0x73, (byte) 0x21, (byte) 0x8c,
+            (byte) 0x7e, (byte) 0xc8, (byte) 0xee, (byte) 0x99
+        };
+
+        // Same iteration count in encryption
+        int count = 20;
+
+        // Create PBE parameter set
+        pbeParamSpec = new PBEParameterSpec(salt, count);
+
+     // Prompt user for encryption password.
+        // Collect user password as char array (using the
+        // "readPasswd" method from above), and convert
+        // it into a SecretKey object, using a PBE key
+        // factory.
+        try {
+            System.out.println();
+            System.out.print("Enter encryption password:  ");
+  //   System.out.flush();
+
+            //pbeKeySpec = new PBEKeySpec(readPasswd(System.in));
+            pbeKeySpec = new PBEKeySpec(password);
+
+            System.out.println("Decrypting the ciphertext ...");
+
+            keyFac = SecretKeyFactory.getInstance("PBEWithMD5AndDES");
+            SecretKey pbeKey = keyFac.generateSecret(pbeKeySpec);
+
+            // Create PBE Cipher
+            Cipher pbeCipher = Cipher.getInstance("PBEWithMD5AndDES");
+
+            // Initialize PBE Cipher with key and parameters
+            pbeCipher.init(Cipher.DECRYPT_MODE, pbeKey, pbeParamSpec);
+
+            // Decrypt the cleartext
+            try {
+                clearbuff = pbeCipher.doFinal(buff);
+            } catch (Exception ex) {
+                // Handle the error...
+                System.out.println("Possible password missmatch!!\n");
+                System.out.println("Caught Exception1: " + ex);
+            }
+        } catch (Exception ex) {
+            // Handle the error...
+            System.out.println("Caught Exception2: " + ex);
+        }
+    }// decrypt()
+
     
 }
